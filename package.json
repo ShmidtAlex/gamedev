@@ -1,0 +1,22 @@
+{
+  "name": "gamedev",
+  "version": "1.0.0",
+  "description": "explore gamedev main terms and conditions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShmidtAlex/gamedev.git"
+  },
+  "keywords": [
+    "game"
+  ],
+  "author": "Shmidt Alex",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShmidtAlex/gamedev/issues"
+  },
+  "homepage": "https://github.com/ShmidtAlex/gamedev#readme"
+}
