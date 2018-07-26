@@ -4,6 +4,7 @@
   "description": "explore gamedev main terms and conditions",
   "main": "index.js",
   "scripts": {
+    "start":"live-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/ShmidtAlex/gamedev/issues"
   },
-  "homepage": "https://github.com/ShmidtAlex/gamedev#readme"
+  "homepage": "https://github.com/ShmidtAlex/gamedev#readme",
+  "dependencies": {
+    "live-server": "^1.2.0"
+  }
 }
