@@ -9,9 +9,9 @@ let Game = {
     balloonSprite3 : undefined,
     cannonPosition : { x : 460, y : 0 },
     cannonOrigin: { x:34, y: 34},
-    cannonImageSize: {h: 20, w:20 },
+    //cannonImageSize:  {width:30, height: 30},
 };
-console.log(Game.cannonImageSize);
+//console.log(Game.cannonImageSize);
 
 Game.start = function () {
     Game.canvas = document.getElementById("mycanvas");
@@ -21,7 +21,10 @@ Game.start = function () {
     Game.cannonBarrelSprite = new Image();
     Game.balloonSprite2 = new Image();
     Game.balloonSprite3 = new Image();
+
     Game.cannonBarrelSprite.src = "target_PNG17.png";
+    //Game.cannonBarrelSprite.backgroundSize = '10px';
+   // console.log(Game.cannonBarrelSprite.height);
     window.setTimeout(Game.mainLoop, 500);
 };
 
@@ -32,12 +35,12 @@ Game.clearCanvas = function () {
 };
 
 Game.drawImage = function (sprite, position, origin, imageSize) {
-  console.log();
+  //console.log(imageSize.width, imageSize.height);
   Game.canvasContext.save();
   Game.canvasContext.translate(position.x, position.y);
-  Game.canvasContext.drawImage(sprite, 0, 0, imageSize.x || sprite.width, imageSize.y || sprite.height,
+  Game.canvasContext.drawImage(sprite, 0, 0, sprite.width, sprite.height,
       -origin.x, -origin.y, sprite.width, sprite.height);
-  console.log(sprite.w, sprite.h);
+ 
   Game.canvasContext.restore();
 };
 Game.mainLoop = function() {
@@ -54,10 +57,11 @@ Game.update = function () {
 };
 
 Game.draw = function () {
-    Game.drawImage(Game.backgroundSprite, { x : 0, y : 0 }, {}, );
+    Game.drawImage(Game.backgroundSprite, { x : 0, y : 0 }, {x: 0, y:0}, {});
     Game.cannonOrigin = { x: Game.cannonBarrelSprite.width/2, y: Game.cannonBarrelSprite.height/2};
-    Game.drawImage(Game.cannonBarrelSprite, Game.cannonPosition, Game.cannonOrigin, { h: 20, w:20 });
-    console.log(Game.cannonImageSize);
+    Game.drawImage(Game.cannonBarrelSprite, Game.cannonPosition, Game.cannonOrigin, Game.cannonImageSize);
+    //console.log(Game.cannonImageSize.width);
+    
 };
 Game.handleMouseMove = function(e){
   Game.cannonPosition = { x: e.pageX, y: e.pageY };
