@@ -23,6 +23,8 @@ let cannon = {
 let Mouse = {
   position: {x: 0, y: 0},
 }
+//"-1" means, that user currentyl is not pressing any key
+let Keyboard = { keyDown: -1 };
 //we're going to store all sprites in separate object, they'll be downloaded only when game is started
 let sprites = {};
 Game.start = function () {
@@ -38,7 +40,7 @@ Game.start = function () {
     cannon.cannonBarrelSprite.src = spriteFolder + "spr_cannon_barrel.png";
     Game.balloonSprite2 = new Image();
     Game.balloonSprite3 = new Image();
-    
+    document.onkeyup = handleKeyUp;
     window.setTimeout(Game.mainLoop, 500);
 };
 
@@ -86,3 +88,12 @@ Game.handleMouseMove = function(e){
   target.position = { x: e.pageX, y: e.pageY };
   Mouse.position = { x: e.pageX, y: e.pageY };
 };
+function handleKeyDown(e) {
+  Keyboard.keyDown = e.keyCode;
+}
+//when user press the key, the keyCode it stored in Keyboard
+document.onkeydown = handleKeyDown; 
+//in this approach user can't press keys simultaneously
+function handleKeyUp(e) {
+  Keyboard.keyDown = -1;
+}
