@@ -1,30 +1,41 @@
 "use strict";
 
+let Canvas2D = {
+  canvas : undefined,
+  canvasContext : undefined,
+};
 let Game = {
-    canvas : undefined,
-    canvasContext : undefined,
     backgroundSprite : undefined,
-    targetSprite: undefined,
-    cannonBarrelSprite: undefined,
     balloonSprite2 : undefined,
     balloonSprite3 : undefined,
-    mousePostion: {x: 0, y: 0},
-    targetPosition : { x : 460, y : 0 },
-    targetOrigin: { x:34, y: 34},
-    cannonPosition: {x: 72, y: 405},
-    cannonOrigin: {x: 34, y: 43},
-    cannonRotation: 0,
 };
-
+let target = {
+  targetSprite: undefined,
+  position : { x : 460, y : 0 },
+  origin: { x:34, y: 34},
+};
+let cannon = {
+  cannonBarrelSprite: undefined,
+  position: {x: 72, y: 405},
+  origin: {x: 34, y: 34},
+  rotation: 0,
+};
+let Mouse = {
+  position: {x: 0, y: 0},
+}
+//we're going to store all sprites in separate object, they'll be downloaded only when game is started
+let sprites = {};
 Game.start = function () {
-    Game.canvas = document.getElementById("mycanvas");
-    Game.canvasContext = Game.canvas.getContext("2d");
+    Canvas2D.canvas = document.getElementById("mycanvas");
+    Canvas2D.canvasContext = Canvas2D.canvas.getContext("2d");
+    //special variable for folder, which stores sprites
+    let spriteFolder = './sprites/';
     Game.backgroundSprite = new Image();
-    Game.backgroundSprite.src = "spr_background.jpg";
-    Game.targetSprite = new Image();
-    Game.targetSprite.src = "target_PNG17.png";
-    Game.cannonBarrelSprite = new Image();
-    Game.cannonBarrelSprite.src = "spr_cannon_barrel.png";
+    Game.backgroundSprite.src = spriteFolder + "spr_background.jpg";
+    target.targetSprite = new Image();
+    target.targetSprite.src = spriteFolder + "target_PNG17.png";
+    cannon.cannonBarrelSprite = new Image();
+    cannon.cannonBarrelSprite.src = spriteFolder + "spr_cannon_barrel.png";
     Game.balloonSprite2 = new Image();
     Game.balloonSprite3 = new Image();
     
@@ -33,45 +44,45 @@ Game.start = function () {
 
 document.addEventListener( 'DOMContentLoaded', Game.start);
 
-Game.clearCanvas = function () {
-    Game.canvasContext.clearRect(0, 0, Game.canvas.width, Game.canvas.height);
+Canvas2D.clearCanvas = function () {
+    Canvas2D.canvasContext.clearRect(0, 0, Canvas2D.canvas.width, Canvas2D.canvas.height);
 };
 
-Game.drawImage = function (sprite, position, rotation, origin) {
-  Game.canvasContext.save();
-  Game.canvasContext.translate(position.x, position.y);
-  Game.canvasContext.rotate(rotation);
-  Game.canvasContext.drawImage(sprite, 0, 0, sprite.width, sprite.height,
+Canvas2D.drawImage = function (sprite, position, rotation, origin) {
+  Canvas2D.canvasContext.save();
+  Canvas2D.canvasContext.translate(position.x, position.y);
+  Canvas2D.canvasContext.rotate(rotation);
+  Canvas2D.canvasContext.drawImage(sprite, 0, 0, sprite.width, sprite.height,
       -origin.x, -origin.y, sprite.width, sprite.height);
  
-  Game.canvasContext.restore();
+  Canvas2D.canvasContext.restore();
 };
 Game.mainLoop = function() {
-    Game.clearCanvas();
+    Canvas2D.clearCanvas();
     Game.update();
     Game.draw();
     window.setTimeout(Game.mainLoop, 1000 / 60);
 };
 
 Game.update = function () {
-  let opposite = Game.mousePostion.y - Game.cannonPosition.y;
-  let adjacent = Game.mousePostion.x - Game.cannonPosition.x;
-  Game.cannonRotation = Math.atan2(opposite, adjacent);
+  let opposite = Mouse.position.y - cannon.position.y;
+  let adjacent = Mouse.position.x - cannon.position.x;
+  cannon.rotation = Math.atan2(opposite, adjacent);
     //let d = new Date();
-    //Game.targetPosition.x = d.getTime() * 0.3 % Game.canvas.width;
-    Game.canvas.onmousemove = Game.handleMouseMove;
+    //cannon.position.x = d.getTime() * 0.3 % Canvas2D.canvas.width;
+    Canvas2D.canvas.onmousemove = Game.handleMouseMove;
 };
 
 Game.draw = function () {
-    Game.drawImage(Game.backgroundSprite, { x : 0, y : 0 }, 0, {x: 0, y:0});
-    Game.targetOrigin = { x: Game.targetSprite.width/2, y: Game.targetSprite.height/2};
-    Game.drawImage(Game.targetSprite, Game.targetPosition, 0, Game.targetOrigin);
-    Game.drawImage(Game.cannonBarrelSprite, Game.cannonPosition, Game.cannonRotation, Game.cannonOrigin)
-    //console.log(Game.targetOrigin);
+    Canvas2D.drawImage(Game.backgroundSprite, { x : 0, y : 0 }, 0, {x: 0, y:0});
+    target.origin = { x: target.targetSprite.width/2, y: target.targetSprite.height/2};
+    Canvas2D.drawImage(target.targetSprite, target.position, 0, target.origin);
+    Canvas2D.drawImage(cannon.cannonBarrelSprite, cannon.position, cannon.rotation, cannon.origin)
+    //console.log(cannon.origin);
     
 };
 //this one define mouse position for different goals:
 Game.handleMouseMove = function(e){
-  Game.targetPosition = { x: e.pageX, y: e.pageY };
-  Game.mousePostion = { x: e.pageX, y: e.pageY };
+  target.position = { x: e.pageX, y: e.pageY };
+  Mouse.position = { x: e.pageX, y: e.pageY };
 };
