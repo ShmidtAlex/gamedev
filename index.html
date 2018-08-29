@@ -3,7 +3,18 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-	<script rel="stylesheet" src="/js/index.js"></script>
+	<script rel="stylesheet" src="LAB.js"></script>
+	<script>
+		$LAB
+		.script('input/Keyboard.js').wait()
+		.script('input/Mouse.js').wait()
+		.script('Canvas2D.js').wait()
+		.script('system/Keys.js').wait()
+		.script('Painter.js').wait()
+		.script('Cannon.js').wait(function () {
+			Game.start('mycanvas');
+		});
+	</script>
 </head>
 <body>
 	<div id="gameWorld">
