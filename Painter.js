@@ -27,33 +27,17 @@ Game.start = function () {
     Mouse.initialize();
     Game.loadAssets();
     Game.assetLoadingLoop();
-    //special variable for folder, which stores sprites
-    let spriteFolder = './sprites/';
-    sprites.backgroundSprite = new Image();
-    sprites.backgroundSprite.src = spriteFolder + "spr_background.jpg";
-    sprites.targetSprite = new Image();
-    sprites.targetSprite.src = spriteFolder + "target_PNG17.png";
-    sprites.cannonBarrelSprite = new Image();
-    sprites.cannonBarrelSprite.src = spriteFolder + "spr_cannon_barrel.png";
-    //sprites.balloonYellow.src = spriteFolder + "spr_balloon.png";
-    sprites.cannon_red = new Image();
-    sprites.cannon_red.src = spriteFolder + "spr_cannon_red.png";
-    sprites.cannon_green = new Image();
-    sprites.cannon_green.src = spriteFolder + "spr_cannon_green.png";
-    sprites.cannon_blue  = new Image();
-    sprites.cannon_blue.src = spriteFolder + "spr_cannon_blue.png";
-    //invoke function, which assigns values to variables:
-    cannon.initialize();
-    //console.log(cannon.currentColor)
-    window.setTimeout(Game.mainLoop, 500);
 };
 
 Game.initialize = function() {
-  cannon.handleInput();
+  cannon.initialize();
 };
 
+Game.handleInput = function () {
+  cannon.handleInput();
+}
 Game.update =function() {
-  cannon.update();
+  //cannon.update();
 };
 
 Game.draw = function () {
@@ -67,7 +51,48 @@ Game.draw = function () {
 };
 
 Game.loadAssets = function () {
-  let spriteFolder = "./sprites";
+  let spriteFolder = "./sprites/";
   sprites.background = Game.loadSprite(spriteFolder +"spr_background.jpg");
-  // I NEED CORRECT ALL SPRITES PATHS THIS WAY
+  sprites.backgroundSprite = Game.loadSprite(spriteFolder + "spr_background.jpg");
+  sprites.targetSprite = Game.loadSprite(spriteFolder + "target_PNG17.png");
+  //console.log(targetSprite);
+  sprites.cannonBarrelSprite = Game.loadSprite(spriteFolder + "spr_cannon_barrel.png");
+  //sprites.balloonYellow.src = spriteFolder + "spr_balloon.png";
+  sprites.cannon_red = Game.loadSprite(spriteFolder + "spr_cannon_red.png");
+  sprites.cannon_green = Game.loadSprite(spriteFolder + "spr_cannon_green.png");
+  sprites.cannon_blue  = Game.loadSprite(spriteFolder + "spr_cannon_blue.png");
+}
+
+//launched on each sprites in loadAccess() method
+Game.loadSprite = function(imageName) {
+  let image = new Image();
+  image.src = imageName;
+  //every time, when we loading one sprite, we count it
+  Game.spritesStillLoading +=1;
+  //this is event(onload) handler:
+  image.onload = function() {
+    //every time, when we finised loading sprite, we decrement it
+    Game.spritesStillLoading -=1;
+  };
+  return image;
+}
+
+//Launched only after loadAssets() method
+Game.assetLoadingLoop = function() {
+  if (Game.spritesStillLoading > 0) {
+    window.setTimeout(Game.assetLoadingLoop, 1000 / 60);
+  }
+  else {
+    Game.initialize();
+    Game.mainLoop();
+  }
+};
+
+//launched only if all sprites loaded (checking in previous method assetLoadingLoop)
+Game.mainLoop = function() {
+  Game.handleInput();
+  Game.update();
+  Game.draw();
+  Mouse.reset();
+  window.requestAnimationFrame(Game.mainLoop);
 }

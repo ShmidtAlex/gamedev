@@ -26,7 +26,7 @@ cannon.handleInput = function(delta) {
   }
   let opposite = Mouse.position.y - cannon.position.y;
   let adjacent = Mouse.position.x - cannon.position.x;
-  cannon.rotation = Magh.atan2(opposite, adjacent);
+  cannon.rotation = Math.atan2(opposite, adjacent);
 };
 
 cannon.draw = function() {
