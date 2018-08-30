@@ -6,7 +6,7 @@ let Canvas2D = {
 };
 
 Canvas2D.initialize = function(canvasName) {
-  Canvas2D.canvas = document.getElementById("mycanvas");
+  Canvas2D.canvas = document.getElementById(canvasName);
   Canvas2D.canvasContext = Canvas2D.canvas.getContext("2d");
 };
 
